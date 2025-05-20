@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { FiLogOut } from "react-icons/fi";
-
+import logo from "../assets/logo.png";
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,54 +12,69 @@ const Navbar = () => {
     setMenuOpen(false);
   };
 
-  const navLinks = (
-    <>
-      <NavLink to="/" className="mx-2">Home</NavLink>
-      <NavLink to="/recipes" className="mx-2">All Recipes</NavLink>
-      {user && (
-        <>
-          <NavLink to="/add-recipe" className="mx-2">Add Recipe</NavLink>
-          <NavLink to="/my-recipes" className="mx-2">My Recipes</NavLink>
-        </>
-      )}
-    </>
-  );
-
   return (
-    <nav className="bg-white shadow-md px-4 py-3 flex justify-between items-center">
-      <Link to="/" className="text-2xl font-bold text-orange-600">Recipe Book</Link>
-      
-      <div className="flex items-center space-x-4">
-        <div className="hidden md:flex">{navLinks}</div>
+    <div className="navbar bg-base-200 shadow-md px-4">
+      {/* Logo/Title */}
+      <div className="flex-1 flex items-center gap-2">
+        <Link to="/">
+          <img src={logo} alt="Logo" className="h-10 w-10" />
+        </Link>
+        <Link to="/" className="btn btn-ghost text-xl text-orange-600 font-bold">
+          Recipe Book
+        </Link>
+      </div>
 
+      {/* Nav Links */}
+      <div className="hidden md:flex gap-2 items-center">
+        <NavLink to="/" className="btn btn-ghost text-base">Home</NavLink>
+        <NavLink to="/recipes" className="btn btn-ghost text-base">All Recipes</NavLink>
+        {user && (
+          <>
+            <NavLink to="/add-recipe" className="btn btn-ghost text-base">Add Recipe</NavLink>
+            <NavLink to="/my-recipes" className="btn btn-ghost text-base">My Recipes</NavLink>
+          </>
+        )}
+      </div>
+
+      {/* Auth Section */}
+      <div className="flex-none gap-2">
         {!user ? (
           <>
-            <Link to="/login" className="btn btn-outline btn-sm">Login</Link>
-            <Link to="/register" className="btn btn-outline btn-sm">Register</Link>
+            <Link to="/login" className="btn btn-sm bg-blue-500 text-white">Login</Link>
+            <Link to="/register" className="btn btn-sm btn-outline">Register</Link>
           </>
         ) : (
-          <div className="relative">
-            <img
-              src={user.photoURL}
-              alt="avatar"
-              className="w-10 h-10 rounded-full cursor-pointer"
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
               onClick={() => setMenuOpen(!menuOpen)}
-            />
-            {menuOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border shadow-lg rounded-lg p-3 z-50">
-                <p className="font-semibold text-gray-700 mb-2">{user.displayName}</p>
-                <button
-                  className="flex items-center text-red-500 hover:underline"
-                  onClick={handleLogout}
-                >
-                  <FiLogOut className="mr-2" /> Logout
-                </button>
+            >
+              <div className="w-10 rounded-full">
+                <img
+                  src={user.photoURL || "https://i.postimg.cc/cLxLKGfH/images.png"}
+                  alt="user avatar"
+                />
               </div>
+            </div>
+            {menuOpen && (
+              <ul className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-48 z-50">
+                <li className="font-semibold text-gray-700">{user.displayName || "User"}</li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center text-red-500 hover:text-red-700"
+                  >
+                    <FiLogOut className="mr-2" /> Logout
+                  </button>
+                </li>
+              </ul>
             )}
           </div>
         )}
       </div>
-    </nav>
+    </div>
   );
 };
 
