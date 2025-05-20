@@ -14,6 +14,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import AuthProvider from './context/AuthContext';
+import PrivateRoute from "./routes/PrivateRoute.jsx";
+import RecipeDetails from "./pages/RecipeDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/recipes", element: <AllRecipes /> },
       { path: "/add-recipe", element: <AddRecipe /> }, 
+        {
+    path: "/recipe/:id",
+    element: <PrivateRoute><RecipeDetails /></PrivateRoute>
+  }
     ],
   },
   { path: "/login", element: <Login /> },

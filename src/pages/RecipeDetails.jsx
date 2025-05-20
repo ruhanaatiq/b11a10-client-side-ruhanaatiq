@@ -1,66 +1,56 @@
-import { Link, NavLink } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { FiLogOut } from "react-icons/fi";
+import { toast } from "react-toastify";
 
-const Navbar = () => {
-  const { user, logout } = useContext(AuthContext);
-  const [menuOpen, setMenuOpen] = useState(false);
+const RecipeDetails = () => {
+  const { id } = useParams();
+  const [recipe, setRecipe] = useState(null);
+  const { user } = useContext(AuthContext);
 
-  const handleLogout = async () => {
-    await logout();
-    setMenuOpen(false);
+  useEffect(() => {
+    fetch(`http://localhost:3000/recipes/${id}`)
+      .then((res) => res.json())
+      .then((data) => setRecipe(data));
+  }, [id]);
+
+  const handleLike = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/recipes/${id}/like`, {
+        method: "PUT",
+      });
+      if (res.ok) {
+        setRecipe((prev) => ({ ...prev, likes: prev.likes + 1 }));
+        toast.success("You liked this recipe!");
+      }
+    } catch (err) {
+      toast.error("Failed to like the recipe");
+    }
   };
 
-  const navLinks = (
-    <>
-      <NavLink to="/" className="mx-2">Home</NavLink>
-      <NavLink to="/recipes" className="mx-2">All Recipes</NavLink>
-      {user && (
-        <>
-          <NavLink to="/add-recipe" className="mx-2">Add Recipe</NavLink>
-          <NavLink to="/my-recipes" className="mx-2">My Recipes</NavLink>
-        </>
-      )}
-    </>
-  );
+  if (!recipe) return <div className="text-center mt-10">Loading...</div>;
 
   return (
-    <nav className="bg-white shadow-md px-4 py-3 flex justify-between items-center">
-      <Link to="/" className="text-2xl font-bold text-orange-600">Recipe Book</Link>
-      
-      <div className="flex items-center space-x-4">
-        <div className="hidden md:flex">{navLinks}</div>
+    <div className="max-w-4xl mx-auto p-6 bg-base-100 shadow rounded-lg mt-10">
+      <img
+        src={recipe.image || "https://via.placeholder.com/600x300"}
+        alt={recipe.title}
+        className="w-full h-64 object-cover rounded mb-4"
+      />
+      <h2 className="text-3xl font-bold">{recipe.title}</h2>
+      <p className="text-gray-600 mt-2"><strong>Cuisine:</strong> {recipe.cuisine}</p>
+      <p><strong>Preparation Time:</strong> {recipe.prepTime} minutes</p>
+      <p><strong>Categories:</strong> {recipe.categories?.join(", ")}</p>
+      <p className="mt-4"><strong>Ingredients:</strong> {recipe.ingredients}</p>
+      <p className="mt-2"><strong>Instructions:</strong> {recipe.instructions}</p>
 
-        {!user ? (
-          <>
-            <Link to="/login" className="btn btn-outline btn-sm">Login</Link>
-            <Link to="/register" className="btn btn-outline btn-sm">Register</Link>
-          </>
-        ) : (
-          <div className="relative">
-            <img
-              src={user.photoURL}
-              alt="avatar"
-              className="w-10 h-10 rounded-full cursor-pointer"
-              onClick={() => setMenuOpen(!menuOpen)}
-            />
-            {menuOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border shadow-lg rounded-lg p-3 z-50">
-                <p className="font-semibold text-gray-700 mb-2">{user.displayName}</p>
-                <button
-                  className="flex items-center text-red-500 hover:underline"
-                  onClick={handleLogout}
-                >
-                  <FiLogOut className="mr-2" /> Logout
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+      <div className="mt-6 flex items-center gap-4">
+        <button onClick={handleLike} className="btn btn-primary">
+          👍 Like ({recipe.likes || 0})
+        </button>
       </div>
-    </nav>
+    </div>
   );
 };
 
-export default Navbar;
+export default RecipeDetails;
