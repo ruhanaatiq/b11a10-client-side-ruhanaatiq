@@ -23,7 +23,7 @@ const Home = () => {
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-6xl font-bold">Welcome to Recipe Book</h1>
             <p className="py-6 text-lg">Discover and share your favorite recipes from around the world.</p>
-            <Link to="/recipes" className="btn btn-primary">Explore All Recipes</Link>
+            <Link to="/recipes" className="btn  bg-orange-500">Explore All Recipes</Link>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@ const Home = () => {
 
         {/* See All Recipes Button */}
         <div className="text-center mt-10">
-          <Link to="/recipes" className="btn btn-wide btn-primary">
+          <Link to="/recipes" className="btn btn-wide bg-orange-500">
             See All Recipes
           </Link>
         </div>

@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 
+
 const RecipeDetails = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
@@ -33,7 +34,7 @@ const RecipeDetails = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-base-100 shadow rounded-lg mt-10">
       <img
-        src={recipe.image || "https://via.placeholder.com/600x300"}
+        src={recipe.image || "https://i.ibb.co/VYDYNCpv/MSL-341240-Quick-Carbonara-hero-3x2-6889-8c65cdf67f1149189b492c4def3c02e5.jpg"}
         alt={recipe.title}
         className="w-full h-64 object-cover rounded mb-4"
       />

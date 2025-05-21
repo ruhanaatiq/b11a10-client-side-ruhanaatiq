@@ -1,15 +1,25 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { FiLogOut } from "react-icons/fi";
 import logo from "../assets/logo.png";
+import { toast } from 'react-hot-toast';
+
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate(); // ✅ MISSING BEFORE
 
   const handleLogout = async () => {
-    await logout();
-    setMenuOpen(false);
+    try {
+      await logout();
+      toast.success("Logged out successfully");
+      setMenuOpen(false);
+      navigate("/login"); // ✅ Ensure navigate is defined
+    } catch (err) {
+      toast.error("Logout failed");
+      console.error(err);
+    }
   };
 
   return (

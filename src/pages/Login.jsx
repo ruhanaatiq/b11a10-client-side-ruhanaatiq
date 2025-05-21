@@ -18,13 +18,16 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
 
+    setError(''); // Clear previous error
+
     try {
       await signIn(email, password);
       toast.success('Logged in successfully!');
+      form.reset(); // Optional: clear form after success
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message);
-      toast.error('Login failed');
+      setError(err.message || 'Login failed');
+      toast.error('Login failed. Check your credentials.');
     }
   };
 
@@ -34,7 +37,7 @@ const Login = () => {
       toast.success('Logged in with Google!');
       navigate(from, { replace: true });
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.message || 'Google login failed');
     }
   };
 
@@ -57,22 +60,24 @@ const Login = () => {
             className="input input-bordered w-full"
             required
           />
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className="text-right">
             <Link to="#" className="text-sm text-orange-500 link">Forgot Password?</Link>
           </div>
-          <button className="btn btn-primary w-full">Login</button>
+          <button type="submit" className="btn btn-primary w-full">Login</button>
         </form>
+
         <div className="text-center text-orange-500">
-          <p >
+          <p>
             New here? <Link to="/register" className="link">Register</Link>
           </p>
         </div>
+
         <button
           onClick={handleGoogleLogin}
           className="btn btn-outline w-full flex gap-2 items-center justify-center"
         >
-          <FcGoogle className="text-xl " /> Continue with Google
+          <FcGoogle className="text-xl" /> Continue with Google
         </button>
       </div>
     </div>

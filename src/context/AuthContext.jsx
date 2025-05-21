@@ -1,4 +1,3 @@
-// src/context/AuthContext.jsx
 import { createContext, useEffect, useState } from 'react';
 import {
   getAuth,
@@ -38,9 +37,16 @@ const AuthProvider = ({ children }) => {
   };
 
   // ✅ Logout
-  const logout = () => {
+  const logout = async () => {
     setLoading(true);
-    return signOut(auth);
+    try {
+      await signOut(auth);
+      setUser(null); // optional, usually auto-handled by onAuthStateChanged
+    } catch (error) {
+      console.error('Logout Error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 🔄 Listen for auth state changes
