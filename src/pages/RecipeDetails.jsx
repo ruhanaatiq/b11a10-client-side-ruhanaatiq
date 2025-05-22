@@ -1,27 +1,24 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
 
 const RecipeDetails = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
-  const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/recipes/${id}`)
+    fetch(`http://localhost:5000/recipes/${id}`)
       .then((res) => res.json())
       .then((data) => setRecipe(data));
   }, [id]);
 
   const handleLike = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/recipes/${id}/like`, {
+      const res = await fetch(`http://localhost:5000/recipes/${id}/like`, {
         method: "PUT",
       });
       if (res.ok) {
-        setRecipe((prev) => ({ ...prev, likes: prev.likes + 1 }));
+        setRecipe((prev) => ({ ...prev, likes: (prev.likes || 0) + 1 }));
         toast.success("You liked this recipe!");
       }
     } catch (err) {
@@ -34,7 +31,7 @@ const RecipeDetails = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-base-100 shadow rounded-lg mt-10">
       <img
-        src={recipe.image || "https://i.ibb.co/VYDYNCpv/MSL-341240-Quick-Carbonara-hero-3x2-6889-8c65cdf67f1149189b492c4def3c02e5.jpg"}
+        src={recipe.image}
         alt={recipe.title}
         className="w-full h-64 object-cover rounded mb-4"
       />

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-
+import CustomerReviews from "../components/CustomerReviews";
 const Home = () => {
   const [topRecipes, setTopRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("https://your-backend-api.com/recipes/top")
+   fetch("http://localhost:5000/recipes/top")
       .then(res => res.json())
       .then(data => setTopRecipes(data))
       .catch(err => console.error(err));
@@ -65,7 +64,7 @@ const Home = () => {
           </Link>
         </div>
       </div>
-
+<CustomerReviews />
     </>
   );
 };

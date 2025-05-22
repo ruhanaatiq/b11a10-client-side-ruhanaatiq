@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../provider/AuthProvider';
 import { toast } from 'react-hot-toast';
 
 const AddRecipe = () => {
@@ -26,11 +26,14 @@ const AddRecipe = () => {
     };
 
     try {
-      const res = await fetch('https://your-backend-api.com/recipes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(recipe),
-      });
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const res = await fetch(`${BASE_URL}/recipes`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(recipe),
+});
+
+    
 
       if (res.ok) {
         toast.success('Recipe added successfully!');
