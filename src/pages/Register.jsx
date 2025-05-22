@@ -1,79 +1,68 @@
-import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../provider/AuthProvider';
-import { toast } from 'react-hot-toast';
-import { updateProfile } from 'firebase/auth';
-import { FcGoogle } from 'react-icons/fc';
+import { useContext, useState } from "react";
+import { AuthContext } from "../provider/AuthProvider";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Register = () => {
-  const { createUser, googleSignIn } = useContext(AuthContext);
-  const [error, setError] = useState('');
+  const { createUser, updateUserProfile, googleLogin } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const validatePassword = password => {
-    const uppercase = /[A-Z]/.test(password);
-    const lowercase = /[a-z]/.test(password);
-    const length = password.length >= 6;
-    return uppercase && lowercase && length;
-  };
-
-  const handleRegister = e => {
+  const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
+    const photoURL = form.photoURL.value;
     const email = form.email.value;
-    const photo = form.photo.value;
     const password = form.password.value;
 
-    if (!validatePassword(password)) {
-      setError('Password must be at least 6 characters and include uppercase and lowercase letters.');
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters.");
       return;
     }
 
+    setLoading(true);
     createUser(email, password)
-  .then(async (result) => {
-    await updateProfile(result.user, {
-      displayName: name,
-      photoURL: photo,
-    });
-    toast.success('Registered successfully!');
-    navigate('/');
-  })
-      .catch(err => {
-        setError(err.message);
-        toast.error('Registration failed');
-      });
+      .then(() => {
+        updateUserProfile({ displayName: name, photoURL }).then(() => {
+          toast.success("Registered successfully!");
+          navigate("/");
+        });
+      })
+      .catch((err) => toast.error(err.message))
+      .finally(() => setLoading(false));
   };
 
-  const handleGoogleLogin = () => {
-    googleSignIn()
+  const handleGoogleRegister = () => {
+    googleLogin()
       .then(() => {
-        toast.success('Registered with Google!');
-        navigate('/');
+        toast.success("Signed up with Google!");
+        navigate("/");
       })
-      .catch(err => toast.error(err.message));
+      .catch((err) => toast.error(err.message));
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-4 bg-white rounded shadow">
-        <h2 className="text-2xl font-semibold text-center">Register</h2>
-        <form onSubmit={handleRegister} className="space-y-4">
-          <input name="name" type="text" placeholder="Name" className="input input-bordered w-full" required />
-          <input name="email" type="email" placeholder="Email" className="input input-bordered w-full" required />
-          <input name="photo" type="text" placeholder="Photo URL" className="input input-bordered w-full" required />
-          <input name="password" type="password" placeholder="Password" className="input input-bordered w-full" required />
-          {error && <p className="text-red-500">{error}</p>}
-          <button className="btn btn-primary w-full">Register</button>
+    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center text-orange-600">Create an Account</h2>
+        <form onSubmit={handleRegister}>
+          <input type="text" name="name" required placeholder="Full Name" className="input input-bordered w-full mb-4" />
+          <input type="text" name="photoURL" placeholder="Photo URL (optional)" className="input input-bordered w-full mb-4" />
+          <input type="email" name="email" required placeholder="Email" className="input input-bordered w-full mb-4" />
+          <input type="password" name="password" required placeholder="Password" className="input input-bordered w-full mb-4" />
+          <button type="submit" className="btn bg-orange-500 w-full" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </button>
         </form>
-        <div className="text-center">
-          <p>
-            Already have an account? <Link to="/login" className="link">Login</Link>
-          </p>
-        </div>
-        <button onClick={handleGoogleLogin} className="btn btn-outline w-full flex gap-2 items-center justify-center">
-          <FcGoogle className="text-xl" /> Continue with Google
+        <button onClick={handleGoogleRegister} className="btn btn-outline w-full mt-3">
+          <img src="https://i.ibb.co/6rYhZTg/google.png" alt="Google" className="w-5 h-5 mr-2" />
+          Continue with Google
         </button>
+        <p className="mt-4 text-center text-sm">
+          Already have an account?{" "}
+          <Link to="/login" className="text-orange-500 font-medium">Login</Link>
+        </p>
       </div>
     </div>
   );

@@ -1,79 +1,59 @@
-import React, { useContext, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { AuthContext } from '../provider/AuthProvider';
-import { toast } from 'react-hot-toast';
-import { FcGoogle } from 'react-icons/fc';
+import { useContext, useState } from "react";
+import { AuthContext } from "../provider/AuthProvider";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
-  const { signIn, googleSignIn } = useContext(AuthContext);
-  const [error, setError] = useState('');
+  const { loginUser, googleLogin } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
-  const from = location.state?.from?.pathname || '/';
-
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
+    setLoading(true);
 
-    try {
-      await signIn(email, password);
-      toast.success('Logged in successfully!');
-      navigate(from, { replace: true });
-    } catch (err) {
-      setError(err.message);
-      toast.error('Login failed');
-    }
+    loginUser(email, password)
+      .then(() => {
+        toast.success("Login successful!");
+        navigate(from, { replace: true });
+      })
+      .catch((err) => toast.error(err.message))
+      .finally(() => setLoading(false));
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      await googleSignIn();
-      toast.success('Logged in with Google!');
-      navigate(from, { replace: true });
-    } catch (err) {
-      toast.error(err.message);
-    }
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then(() => {
+        toast.success("Logged in with Google!");
+        navigate(from, { replace: true });
+      })
+      .catch((err) => toast.error(err.message));
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-4 bg-white rounded shadow">
-        <h2 className="text-2xl font-semibold text-center">User Login</h2>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            className="input input-bordered w-full"
-            required
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            className="input input-bordered w-full"
-            required
-          />
-          {error && <p className="text-red-500">{error}</p>}
-          <div className="text-right">
-            <Link to="#" className="text-sm link">Forgot Password?</Link>
-          </div>
-          <button className="btn btn-primary w-full">Login</button>
+    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center text-orange-600">Login to Recipe Book</h2>
+        <form onSubmit={handleLogin}>
+          <input type="email" name="email" required placeholder="Email" className="input input-bordered w-full mb-4" />
+          <input type="password" name="password" required placeholder="Password" className="input input-bordered w-full mb-4" />
+          <button type="submit" className="btn bg-orange-500 w-full" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
-        <div className="text-center">
-          <p>
-            New here? <Link to="/register" className="link">Register</Link>
-          </p>
-        </div>
-        <button
-          onClick={handleGoogleLogin}
-          className="btn btn-outline w-full flex gap-2 items-center justify-center"
-        >
-          <FcGoogle className="text-xl" /> Continue with Google
+        <button onClick={handleGoogleLogin} className="btn btn-outline w-full mt-3">
+          <img src="https://i.ibb.co/6rYhZTg/google.png" alt="Google" className="w-5 h-5 mr-2" />
+          Continue with Google
         </button>
+        <p className="mt-4 text-center text-sm">
+          Don’t have an account?{" "}
+          <Link to="/register" className="text-orange-500 font-medium">Register</Link>
+        </p>
       </div>
     </div>
   );
