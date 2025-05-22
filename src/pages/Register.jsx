@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { FcGoogle } from 'react-icons/fc';
 
 const Register = () => {
   const { createUser, updateUserProfile, googleLogin } = useContext(AuthContext);
@@ -55,10 +56,10 @@ const Register = () => {
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
-        <button onClick={handleGoogleRegister} className="btn btn-outline w-full mt-3">
-          <img src="https://i.ibb.co/6rYhZTg/google.png" alt="Google" className="w-5 h-5 mr-2" />
-          Continue with Google
-        </button>
+       <button onClick={handleGoogleRegister} className="btn btn-outline bg-blue-400 w-full mt-3">
+  <FcGoogle className="w-5 h-5 mr-2" />
+  Continue with Google
+</button>
         <p className="mt-4 text-center text-sm">
           Already have an account?{" "}
           <Link to="/login" className="text-orange-500 font-medium">Login</Link>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CustomerReviews from "../components/CustomerReviews";
+import { Typewriter } from 'react-simple-typewriter'
 const Home = () => {
   const [topRecipes, setTopRecipes] = useState([]);
 
@@ -20,8 +21,17 @@ const Home = () => {
         <div className="hero-overlay bg-opacity-20"></div>
         <div className="hero-content text-center text-white">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold">Welcome to Recipe Book</h1>
-            <p className="py-6 text-lg">Discover and share your favorite recipes from around the world.</p>
+<h1 className="text-4xl md:text-6xl font-bold text-orange-500">
+  <Typewriter
+    words={['Welcome to Recipe Book', 'Explore Tasty Dishes', 'Share Your Own Recipes']}
+    loop={0}
+    cursor
+    cursorStyle="_"
+    typeSpeed={70}
+    deleteSpeed={50}
+    delaySpeed={1500}
+  />
+</h1>            <p className="py-6 text-lg">Discover and share your favorite recipes from around the world.</p>
             <Link to="/recipes" className="btn  bg-orange-500">Explore All Recipes</Link>
           </div>
         </div>
