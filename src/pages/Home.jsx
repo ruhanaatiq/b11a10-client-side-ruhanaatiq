@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CustomerReviews from "../components/CustomerReviews";
 import { Typewriter } from 'react-simple-typewriter';
+import Tips from "../components/Tips";
 
 const Home = () => {
   const [topRecipes, setTopRecipes] = useState([]);
@@ -14,9 +15,12 @@ const Home = () => {
       .catch(err => console.error("Failed to fetch top recipes:", err));
   }, [BASE_URL]);
 
+ 
+
   return (
-    <>
-      {/* Banner / Slider */}
+   
+<>
+      {/* Banner*/}
       <div className="hero min-h-[60vh] bg-[url('https://i.ibb.co/v6SrpJ0m/banner.jpg')] bg-cover bg-center">
         <div className="hero-overlay bg-opacity-20"></div>
         <div className="hero-content text-center text-white">
@@ -69,6 +73,7 @@ const Home = () => {
         </div>
 
         {/* See All Recipes Button */}
+         {/* See All Recipes Button */}
         <div className="text-center mt-10">
           <Link to="/recipes" className="btn btn-wide bg-orange-500">
             See All Recipes
@@ -77,8 +82,8 @@ const Home = () => {
       </div>
 
       <CustomerReviews />
-    </>
+ <Tips></Tips>
+</>
   );
 };
-
 export default Home;
