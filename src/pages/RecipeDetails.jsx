@@ -30,7 +30,7 @@ const RecipeDetails = () => {
         throw new Error();
       }
     } catch (err) {
-      toast.error("Failed to like the recipe");
+      toast.error(err.message||"failed to like the recipe");
     }
   };
 

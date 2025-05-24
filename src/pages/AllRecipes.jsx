@@ -27,10 +27,10 @@ const AllRecipes = () => {
             </figure>
             <div className="p-4 space-y-2">
               <h3 className="text-xl font-semibold">{recipe.title}</h3>
-              <p className="text-sm text-gray-500">Cuisine: {recipe.cuisine}</p>
+              <p className="text-sm text-gray-500">Cuisine: {recipe.cuisineType}</p>
               <p className="text-sm">Prep Time: {recipe.prepTime} mins</p>
               <p className="text-sm">Likes: {recipe.likes || 0}</p>
-              <Link to={`/recipe/${recipe._id}`} className="btn btn-outline btn-sm mt-2">
+              <Link to={`/recipes/${recipe._id}`} className="btn btn-outline btn-sm mt-2">
                 See Details
               </Link>
             </div>

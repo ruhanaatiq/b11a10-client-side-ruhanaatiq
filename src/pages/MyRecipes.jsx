@@ -39,14 +39,14 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
   const handleUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
-    const updated = {
-      title: form.title.value,
-      ingredients: form.ingredients.value.split(',').map(i => i.trim()),
-      instructions: form.instructions.value,
-      cuisine: form.cuisine.value,
-      prepTime: form.prepTime.value,
-      category: form.category.value
-    };
+   const updated = {
+  title: form.title.value,
+  ingredients: form.ingredients.value.split(',').map(i => i.trim()),
+  instructions: form.instructions.value,
+  cuisineType: form.cuisine.value,
+  preparationTime: parseInt(form.prepTime.value),
+  categories: [form.category.value],
+};
 
     try {
       const res = await fetch(`${BASE_URL}/recipes/${selectedRecipe._id}`, {
@@ -74,9 +74,10 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
             <img src={recipe.image} alt={recipe.title} className="w-full h-48 object-cover rounded" />
             <h2 className="text-lg font-semibold">{recipe.title}</h2>
             <p><strong>Ingredients:</strong> {Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : recipe.ingredients}</p>
-            <p><strong>Instructions:</strong> {recipe.instructions}</p>
-            <p><strong>Cuisine:</strong> {recipe.cuisine}</p>
-            <p><strong>Preparation Time:</strong> {recipe.prepTime} mins</p>
+            <p><strong>Cuisine:</strong> {recipe.cuisineType}</p>
+<p><strong>Preparation Time:</strong> {recipe.preparationTime} mins</p>
+<p><strong>Category:</strong> {Array.isArray(recipe.categories) ? recipe.categories.join(', ') : recipe.categories}</p>
+
             <p><strong>Category:</strong> {recipe.category}</p>
             <p><strong>Likes:</strong> {recipe.likes}</p>
 
