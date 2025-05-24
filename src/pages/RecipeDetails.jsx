@@ -6,20 +6,28 @@ const RecipeDetails = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
 
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
   useEffect(() => {
-    fetch(`http://localhost:5000/recipes/${id}`)
-      .then((res) => res.json())
-      .then((data) => setRecipe(data));
-  }, [id]);
+    fetch(`${BASE_URL}/recipes/${id}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch recipe");
+        return res.json();
+      })
+      .then((data) => setRecipe(data))
+      .catch(() => toast.error("Could not load recipe"));
+  }, [id, BASE_URL]);
 
   const handleLike = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/recipes/${id}/like`, {
+      const res = await fetch(`${BASE_URL}/recipes/${id}/like`, {
         method: "PUT",
       });
       if (res.ok) {
         setRecipe((prev) => ({ ...prev, likes: (prev.likes || 0) + 1 }));
         toast.success("You liked this recipe!");
+      } else {
+        throw new Error();
       }
     } catch (err) {
       toast.error("Failed to like the recipe");
@@ -36,10 +44,10 @@ const RecipeDetails = () => {
         className="w-full h-64 object-cover rounded mb-4"
       />
       <h2 className="text-3xl font-bold">{recipe.title}</h2>
-      <p className="text-gray-600 mt-2"><strong>Cuisine:</strong> {recipe.cuisine}</p>
-      <p><strong>Preparation Time:</strong> {recipe.prepTime} minutes</p>
-      <p><strong>Categories:</strong> {recipe.categories?.join(", ")}</p>
-      <p className="mt-4"><strong>Ingredients:</strong> {recipe.ingredients}</p>
+      <p className="text-gray-600 mt-2"><strong>Cuisine:</strong> {recipe.cuisine || recipe.cuisineType}</p>
+      <p><strong>Preparation Time:</strong> {recipe.prepTime || recipe.preparationTime} minutes</p>
+      <p><strong>Categories:</strong> {recipe.categories?.join(", ") || recipe.category}</p>
+      <p className="mt-4"><strong>Ingredients:</strong> {Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : recipe.ingredients}</p>
       <p className="mt-2"><strong>Instructions:</strong> {recipe.instructions}</p>
 
       <div className="mt-6 flex items-center gap-4">

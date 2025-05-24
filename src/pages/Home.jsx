@@ -1,38 +1,39 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CustomerReviews from "../components/CustomerReviews";
-import { Typewriter } from 'react-simple-typewriter'
+import { Typewriter } from 'react-simple-typewriter';
+
 const Home = () => {
   const [topRecipes, setTopRecipes] = useState([]);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
   useEffect(() => {
-   fetch("http://localhost:5000/recipes/top")
+    fetch(`${BASE_URL}/recipes/top`)
       .then(res => res.json())
       .then(data => setTopRecipes(data))
-      .catch(err => console.error(err));
-  }, []);
+      .catch(err => console.error("Failed to fetch top recipes:", err));
+  }, [BASE_URL]);
 
   return (
     <>
-     
-
       {/* Banner / Slider */}
       <div className="hero min-h-[60vh] bg-[url('https://i.ibb.co/v6SrpJ0m/banner.jpg')] bg-cover bg-center">
         <div className="hero-overlay bg-opacity-20"></div>
         <div className="hero-content text-center text-white">
           <div className="max-w-2xl">
-<h1 className="text-4xl md:text-6xl font-bold text-orange-500">
-  <Typewriter
-    words={['Welcome to Recipe Book', 'Explore Tasty Dishes', 'Share Your Own Recipes']}
-    loop={0}
-    cursor
-    cursorStyle="_"
-    typeSpeed={70}
-    deleteSpeed={50}
-    delaySpeed={1500}
-  />
-</h1>            <p className="py-6 text-lg">Discover and share your favorite recipes from around the world.</p>
-            <Link to="/recipes" className="btn  bg-orange-500">Explore All Recipes</Link>
+            <h1 className="text-4xl md:text-6xl font-bold text-orange-500">
+              <Typewriter
+                words={['Welcome to Recipe Book', 'Explore Tasty Dishes', 'Share Your Own Recipes']}
+                loop={0}
+                cursor
+                cursorStyle="_"
+                typeSpeed={70}
+                deleteSpeed={50}
+                delaySpeed={1500}
+              />
+            </h1>
+            <p className="py-6 text-lg">Discover and share your favorite recipes from around the world.</p>
+            <Link to="/recipes" className="btn bg-orange-500">Explore All Recipes</Link>
           </div>
         </div>
       </div>
@@ -45,7 +46,7 @@ const Home = () => {
             <div key={recipe._id} className="card bg-base-100 shadow-md">
               <figure>
                 <img
-                  src={recipe.image || ""}
+                  src={recipe.image || "https://via.placeholder.com/300x200?text=No+Image"}
                   alt={recipe.title}
                   className="h-52 w-full object-cover"
                 />
@@ -74,7 +75,8 @@ const Home = () => {
           </Link>
         </div>
       </div>
-<CustomerReviews />
+
+      <CustomerReviews />
     </>
   );
 };

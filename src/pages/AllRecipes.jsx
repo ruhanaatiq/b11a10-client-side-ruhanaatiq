@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 
 const AllRecipes = () => {
   const [recipes, setRecipes] = useState([]);
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
-    fetch("http://localhost:5000/recipes")
+    fetch(`${baseUrl}/recipes`)
       .then((res) => res.json())
       .then((data) => setRecipes(data))
       .catch((err) => console.error("Failed to fetch recipes", err));
-  }, []);
+  }, [baseUrl]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">

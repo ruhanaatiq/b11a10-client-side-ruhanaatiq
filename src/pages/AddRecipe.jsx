@@ -17,23 +17,23 @@ const AddRecipe = () => {
       instructions: form.instructions.value,
       cuisineType: form.cuisineType.value,
       preparationTime: form.preparationTime.value,
-      categories: Array.from(form.querySelectorAll('input[name=category]:checked')).map(el => el.value),
+      categories: Array.from(
+        form.querySelectorAll('input[name=category]:checked')
+      ).map((el) => el.value),
       likes: 0,
       userEmail: user.email,
       userName: user.displayName,
       userPhoto: user.photoURL,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     try {
-      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-const res = await fetch(`${BASE_URL}/recipes`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(recipe),
-});
-
-    
+      const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const res = await fetch(`${BASE_URL}/recipes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(recipe),
+      });
 
       if (res.ok) {
         toast.success('Recipe added successfully!');
@@ -43,6 +43,7 @@ const res = await fetch(`${BASE_URL}/recipes`, {
         toast.error('Failed to add recipe');
       }
     } catch (err) {
+      console.error(err);
       toast.error('Error adding recipe');
     }
   };
@@ -68,7 +69,7 @@ const res = await fetch(`${BASE_URL}/recipes`, {
         <input name="preparationTime" type="number" placeholder="Preparation Time (minutes)" className="input input-bordered w-full" required />
 
         <div className="grid grid-cols-2 text-red-500 gap-2">
-          {['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Vegan'].map(cat => (
+          {['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Vegan'].map((cat) => (
             <label key={cat} className="flex items-center gap-2">
               <input type="checkbox" name="category" value={cat} className="checkbox" />
               <span>{cat}</span>
