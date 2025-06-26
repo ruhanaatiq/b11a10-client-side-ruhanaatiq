@@ -15,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-200 shadow-md px-4">
+    <div className="navbar bg-white shadow-md px-4 sticky top-0 z-50">
       {/* Logo/Title */}
       <div className="flex-1 flex items-center gap-2">
         <Link to="/">
@@ -28,18 +28,21 @@ const Navbar = () => {
 
       {/* Nav Links */}
       <div className="hidden md:flex gap-2 items-center">
-        <NavLink to="/" className={({ isActive }) => `btn btn-ghost text-base ${isActive ? "btn-primary" : ""}`}>
+         <NavLink 
+          to="/" 
+          className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}
+        >
           Home
         </NavLink>
-        <NavLink to="/recipes" className={({ isActive }) => `btn btn-ghost text-base ${isActive ? "btn-primary" : ""}`}>
+        <NavLink to="/recipes" className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}>
           All Recipes
         </NavLink>
         {user && (
           <>
-            <NavLink to="/add-recipe" className={({ isActive }) => `btn btn-ghost text-base ${isActive ? "btn-primary" : ""}`}>
+            <NavLink to="/add-recipe" className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}>
               Add Recipe
             </NavLink>
-            <NavLink to="/my-recipes" className={({ isActive }) => `btn btn-ghost text-base ${isActive ? "btn-primary" : ""}`}>
+            <NavLink to="/my-recipes" className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}>
               My Recipes
             </NavLink>
           </>
@@ -51,7 +54,7 @@ const Navbar = () => {
         {user ? (
           <>
             <img src={user.photoURL} alt="User" className="w-9 h-9 rounded-full border" />
-            <button onClick={handleLogout} className="btn btn-sm btn-outline">
+            <button onClick={handleLogout} className="btn btn-sm btn-outline text-orange-500">
               <FiLogOut /> Logout
             </button>
           </>
