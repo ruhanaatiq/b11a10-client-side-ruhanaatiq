@@ -76,13 +76,11 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
             <p><strong>Ingredients:</strong> {Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : recipe.ingredients}</p>
             <p><strong>Cuisine:</strong> {recipe.cuisineType}</p>
 <p><strong>Preparation Time:</strong> {recipe.preparationTime} mins</p>
-<p><strong>Category:</strong> {Array.isArray(recipe.categories) ? recipe.categories.join(', ') : recipe.categories}</p>
-
-            <p><strong>Category:</strong> {recipe.category}</p>
+            <p><strong>Category:</strong> {recipe.Category}</p>
             <p><strong>Likes:</strong> {recipe.likes}</p>
 
             <div className="flex gap-2 mt-2">
-              <Link to={`/recipes/${recipe._id}`} className="btn btn-primary btn-sm">
+              <Link to={`/recipes/${recipe._id}`} className="btn bg-orange-600 btn-sm">
                 See Details
               </Link>
               <button onClick={() => setSelectedRecipe(recipe)} className="btn btn-warning btn-sm">Update</button>
@@ -102,7 +100,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
               <textarea name="instructions" defaultValue={selectedRecipe.instructions} className="textarea textarea-bordered w-full" required></textarea>
               <input name="cuisine" defaultValue={selectedRecipe.cuisine} className="input input-bordered w-full" required />
               <input name="prepTime" defaultValue={selectedRecipe.prepTime} className="input input-bordered w-full" required />
-              <input name="category" defaultValue={selectedRecipe.category} className="input input-bordered w-full" required />
+              <input name="category" defaultValue={selectedRecipe.Category} className="input input-bordered w-full" required />
               <div className="modal-action">
                 <button type="submit" className="btn btn-success">Submit</button>
                 <button type="button" onClick={() => setSelectedRecipe(null)} className="btn">Cancel</button>

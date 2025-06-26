@@ -93,7 +93,7 @@ const Home = () => {
                 <div className="mt-4">
                   <Link
                     to={`/recipes/${recipe._id}`}
-                    className="btn btn-sm btn-outline btn-primary"
+                    className="btn btn-sm bg-orange-600"
                   >
                     View Details
                   </Link>

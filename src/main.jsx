@@ -17,6 +17,8 @@ import AuthProvider from './provider/AuthProvider.jsx';
 import PrivateRoute from "./routes/PrivateRoute.jsx";
 import RecipeDetails from "./pages/RecipeDetails.jsx";
 import MyRecipes from "./pages/MyRecipes.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -34,9 +36,18 @@ const router = createBrowserRouter([
         {
     path: "/recipes/:id",
     element: <PrivateRoute><RecipeDetails /></PrivateRoute>
-  }
+  },
+     {
+        path: "/dashboard", // Dashboard Route
+        element: (
+          <PrivateRoute>
+            <Dashboard></Dashboard>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
+   
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
   { path: "*", element: <ErrorPage /> }, // 404 page

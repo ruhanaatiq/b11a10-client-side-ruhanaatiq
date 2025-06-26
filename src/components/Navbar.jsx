@@ -28,22 +28,38 @@ const Navbar = () => {
 
       {/* Nav Links */}
       <div className="hidden md:flex gap-2 items-center">
-         <NavLink 
+        <NavLink 
           to="/" 
           className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}
         >
           Home
         </NavLink>
-        <NavLink to="/recipes" className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}>
+        <NavLink 
+          to="/recipes" 
+          className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}
+        >
           All Recipes
         </NavLink>
+
         {user && (
           <>
-            <NavLink to="/add-recipe" className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}>
+            <NavLink 
+              to="/add-recipe" 
+              className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}
+            >
               Add Recipe
             </NavLink>
-            <NavLink to="/my-recipes" className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}>
+            <NavLink 
+              to="/my-recipes" 
+              className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}
+            >
               My Recipes
+            </NavLink>
+            <NavLink 
+              to="/dashboard" 
+              className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}
+            >
+              Dashboard
             </NavLink>
           </>
         )}

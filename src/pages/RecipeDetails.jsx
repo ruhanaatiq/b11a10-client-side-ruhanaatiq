@@ -44,9 +44,9 @@ const RecipeDetails = () => {
         className="w-full h-64 object-cover rounded mb-4"
       />
       <h2 className="text-3xl font-bold">{recipe.title}</h2>
-      <p className="text-gray-600 mt-2"><strong>Cuisine:</strong> {recipe.cuisine || recipe.cuisineType}</p>
+      <p className="text-white mt-2"><strong>Cuisine:</strong> {recipe.cuisine || recipe.cuisineType}</p>
       <p><strong>Preparation Time:</strong> {recipe.prepTime || recipe.preparationTime} minutes</p>
-      <p><strong>Categories:</strong> {recipe.categories?.join(", ") || recipe.category}</p>
+     <p><strong>Category:</strong> {recipe.Category}</p>
       <p className="mt-4"><strong>Ingredients:</strong> {Array.isArray(recipe.ingredients) ? recipe.ingredients.join(', ') : recipe.ingredients}</p>
       <p className="mt-2"><strong>Instructions:</strong> {recipe.instructions}</p>
 
