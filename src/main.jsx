@@ -17,7 +17,12 @@ import AuthProvider from './provider/AuthProvider.jsx';
 import PrivateRoute from "./routes/PrivateRoute.jsx";
 import RecipeDetails from "./pages/RecipeDetails.jsx";
 import MyRecipes from "./pages/MyRecipes.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
+import Overview from "./pages/Dashboard/Overview.jsx";
+import DashboardAllRecipes from "./pages/Dashboard/DashboardAllRecipes.jsx";
+import DashboardAddRecipe from "./pages/Dashboard/DashboardAddRecipe.jsx";
+import DashboardMyRecipes from "./pages/Dashboard/DashboardMyRecipes.jsx";
+import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import AboutUs from "./components/AboutUs.jsx";
 
 
 const router = createBrowserRouter([
@@ -37,14 +42,19 @@ const router = createBrowserRouter([
     path: "/recipes/:id",
     element: <PrivateRoute><RecipeDetails /></PrivateRoute>
   },
+  
+     { path: "/about", element: <AboutUs /> },
+  
      {
-        path: "/dashboard", // Dashboard Route
-        element: (
-          <PrivateRoute>
-            <Dashboard></Dashboard>
-          </PrivateRoute>
-        ),
-      },
+  path: "/dashboard",
+  element: <PrivateRoute><Dashboard /></PrivateRoute>,
+  children: [
+    { path: "/dashboard", element: <Overview /> },
+    { path: "/dashboard/all-recipes", element: <DashboardAllRecipes /> },
+    { path: "/dashboard/add-recipe", element: <DashboardAddRecipe /> },
+    { path: "/dashboard/my-recipes", element: <DashboardMyRecipes /> },
+  ]
+}
     ],
   },
    

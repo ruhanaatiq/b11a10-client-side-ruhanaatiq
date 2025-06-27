@@ -40,6 +40,12 @@ const Navbar = () => {
         >
           All Recipes
         </NavLink>
+          <NavLink 
+          to="/about" 
+          className={({ isActive }) => `btn btn-ghost text-orange-500 ${isActive ? "btn-primary" : ""}`}
+        >
+          About Us
+        </NavLink>
 
         {user && (
           <>
