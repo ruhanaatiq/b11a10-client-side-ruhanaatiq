@@ -22,7 +22,6 @@ import DashboardAllRecipes from "./pages/Dashboard/DashboardAllRecipes.jsx";
 import DashboardAddRecipe from "./pages/Dashboard/DashboardAddRecipe.jsx";
 import DashboardMyRecipes from "./pages/Dashboard/DashboardMyRecipes.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
-import AboutUs from "./components/AboutUs.jsx";
 
 
 const router = createBrowserRouter([
@@ -43,7 +42,6 @@ const router = createBrowserRouter([
     element: <PrivateRoute><RecipeDetails /></PrivateRoute>
   },
   
-     { path: "/about", element: <AboutUs /> },
   
      {
   path: "/dashboard",
