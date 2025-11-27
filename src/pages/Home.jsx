@@ -1,11 +1,14 @@
 // keep your imports as they are at the top
-import { useEffect, useState } from "react"; 
-import { Link } from "react-router-dom"; 
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import CustomerReviews from "../components/CustomerReviews";
- import { Typewriter } from 'react-simple-typewriter'; 
- import Tips from "../components/Tips"; 
- import { Carousel } from 'react-responsive-carousel'; import "react-responsive-carousel/lib/styles/carousel.min.css";
-  import AboutUs from "../components/AboutUs";
+import { Typewriter } from "react-simple-typewriter";
+import Tips from "../components/Tips";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import AboutUs from "../components/AboutUs";
+import { motion } from "framer-motion";
+
 const Home = () => {
   const [topRecipes, setTopRecipes] = useState([]);
   const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
@@ -146,50 +149,96 @@ const Home = () => {
         </Carousel>
       </section>
 
-      {/* 🔻 Everything below stays the same */}
-      <div className="py-12 px-4 md:px-10 lg:px-20 bg-base-100">
-        <h2 className="text-3xl font-bold text-center mb-8">Top Recipes</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {topRecipes.map((recipe) => (
-            <div key={recipe._id} className="card bg-base-100 shadow-md">
-              <figure>
-                <img
-                  src={
-                    recipe.image ||
-                    "https://via.placeholder.com/300x200?text=No+Image"
-                  }
-                  alt={recipe.title}
-                  className="h-52 w-full object-cover"
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title text-xl">{recipe.title}</h2>
-                <p className="text-gray-600">
-                  Cuisine: {recipe.cuisineType || "N/A"}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Likes: ❤️ {recipe.likes || 0}
-                </p>
-                <div className="mt-4">
-                  <Link
-                    to={`/recipes/${recipe._id}`}
-                    className="btn btn-sm bg-orange-600"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* 🔥 Animated Top Recipes Section */}
+      <section className="py-12 px-4 md:px-10 lg:px-20 bg-base-100">
+        <motion.h2
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-3xl font-bold text-center mb-8"
+        >
+          Top Recipes
+        </motion.h2>
 
-        <div className="text-center mt-10">
-          <Link to="/recipes" className="btn btn-wide bg-orange-500">
+        {topRecipes.length === 0 ? (
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center text-gray-500"
+          >
+            No top recipes available yet. Check back soon!
+          </motion.p>
+        ) : (
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {topRecipes.map((recipe, index) => (
+              <motion.div
+                key={recipe._id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.03 }}
+                className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden"
+              >
+                <figure className="relative">
+                  <img
+                    src={
+                      recipe.image ||
+                      "https://via.placeholder.com/300x200?text=No+Image"
+                    }
+                    alt={recipe.title}
+                    className="h-56 w-full object-cover"
+                  />
+
+                  {/* Subtle gradient overlay on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition duration-300" />
+                </figure>
+
+                <div className="card-body">
+                  <h2 className="card-title text-xl font-semibold">
+                    {recipe.title}
+                  </h2>
+                  <p className="text-gray-600">
+                    Cuisine: {recipe.cuisineType || "N/A"}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    ❤️ Likes: {recipe.likes || 0}
+                  </p>
+
+                  <div className="mt-4">
+                    <Link
+                      to={`/recipes/${recipe._id}`}
+                      className="btn btn-sm bg-orange-600 hover:bg-orange-700 text-white"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mt-10"
+        >
+          <Link
+            to="/recipes"
+            className="btn btn-wide bg-orange-500 hover:bg-orange-600 text-white"
+          >
             See All Recipes
           </Link>
-        </div>
-      </div>
+        </motion.div>
+      </section>
 
+      {/* Other sections remain below */}
       <AboutUs />
       <CustomerReviews />
       <Tips />
